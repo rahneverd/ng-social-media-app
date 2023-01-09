@@ -11,14 +11,26 @@
                 Forgot Password
             </mat-card-title>
         </mat-card-header>
-        <div *ngIf="state == 'LOGIN'">
-            <input placeholder="Email">
-            <input placeholder="Password" type="Password">
-            <button mat-flat-button color="warn">Login</button>
+        <div *ngIf="state == 'LOGIN'" [formGroup]="loginForm">
+            <input placeholder="Email" formControlName="email">
+            <div *ngIf="loginForm.get('email').invalid && loginForm.get('email').touched">
+                <small *ngIf="loginForm.get('email').errors?.required">Email is required</small>
+                <small *ngIf="loginForm.get('email').errors?.email">Provide a valid email address</small>
+            </div>
+            <input placeholder="Password" type="Password" formControlName="password">
+            <div *ngIf="loginForm.get('password').invalid && loginForm.get('password').touched">
+                <small *ngIf="loginForm.get('password').errors?.required">Password is required</small>
+                <small *ngIf="loginForm.get('password').errors?.minlength || loginForm.get('password').errors?.maxlength">Password must be 8 to 16 characters long</small>
+            </div>
+            <button [disabled]="!loginForm.valid" (click)="onLoginSubClick()" mat-flat-button color="warn">Login</button>
         </div>
-        <div *ngIf="state == 'FORGOT'">
-            <input placeholder="Email" type="email">
-            <button mat-flat-button color="warn">Reset Password</button>
+        <div *ngIf="state == 'FORGOT'" [formGroup]="resetForm">
+            <input placeholder="Email" type="email" formControlName="email">
+            <div *ngIf="resetForm.get('email').invalid && resetForm.get('email').touched">
+                <small *ngIf="resetForm.get('email').errors?.required">Email is required</small>
+                <small *ngIf="resetForm.get('email').errors?.email">Provide a valid email address</small>
+            </div>
+            <button [disabled]="!resetForm.valid" (click)="onResetSubClick()" mat-flat-button color="warn">Reset Password</button>
         </div>
         <div *ngIf="state == 'REGISTER'" [formGroup]="regForm">
             <input formControlName="email" placeholder="Email" type="email"> 
@@ -36,7 +48,7 @@
                 <small *ngIf="regForm.get('confirmPassword').errors?.required">Confirm Password is required</small>
                 <small *ngIf="regForm.get('password').value != regForm.get('confirmPassword').value">Password does not match</small>
             </div>
-            <button (click)="onRegSubClick()" mat-flat-button color="warn">Create</button>
+            <button [disabled]="!regForm.valid" (click)="onRegSubClick()" mat-flat-button color="warn">Create</button>
         </div>
         <div>
 

@@ -24,6 +24,15 @@ export class AuthenticatorComponent implements OnInit {
     confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]]
   })
 
+  loginForm = this._fb.group({
+    email: ['', [Validators.email, Validators.required]],
+    password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]]
+  })
+
+  resetForm = this._fb.group({
+    email: ['', [Validators.email, Validators.required]]
+  })
+
   onForgotPasswordClick() {
     this.state = "FORGOT"
   }
@@ -35,7 +44,31 @@ export class AuthenticatorComponent implements OnInit {
   }
 
   onRegSubClick() {
-    console.log(this.regForm)
+    this.firebasetsAuth.createAccountWith({
+      email: this.regForm.controls.email.value,
+      password: this.regForm.controls.password.value,
+      onComplete: (uc) => {console.log(uc)},
+      onFail: (err) => {
+        alert(err)
+      }
+    })
+  }
+  onLoginSubClick() {
+    this.firebasetsAuth.signInWith({
+      email: this.loginForm.controls.email.value,
+      password: this.loginForm.controls.password.value,
+      onComplete: (uc) => console.log(uc),
+      onFail: (err) => alert(err)
+    })
+  }
+  onResetSubClick() {
+    this.firebasetsAuth.sendPasswordResetEmail({
+      email: this.resetForm.controls.email.value,
+      onComplete: (err) => {
+        alert(`Reset email sent to ${this.resetForm.controls.email.value}.`)
+        console.log(err)
+      }
+    })
   }
 }
 
