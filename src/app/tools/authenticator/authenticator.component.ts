@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Console } from 'console';
-import { stat } from 'fs';
+import { FirebaseTSAuth } from 'firebasets/firebasetsAuth/firebaseTSAuth'
+import { FormBuilder } from '@angular/forms';
+import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-authenticator',
@@ -9,10 +10,19 @@ import { stat } from 'fs';
 })
 export class AuthenticatorComponent implements OnInit {
   state = "LOGIN"
-  constructor() { }
+  firebasetsAuth: FirebaseTSAuth
+  constructor(private _fb: FormBuilder) {
+    this.firebasetsAuth = new FirebaseTSAuth()
+  }
 
   ngOnInit(): void {
   }
+
+  regForm = this._fb.group({
+    email: ['', [Validators.email, Validators.required]],
+    password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
+    confirmPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]]
+  })
 
   onForgotPasswordClick() {
     this.state = "FORGOT"
@@ -24,6 +34,9 @@ export class AuthenticatorComponent implements OnInit {
     this.state = "LOGIN"
   }
 
+  onRegSubClick() {
+    console.log(this.regForm)
+  }
 }
 
 export enum AuthenticatorCompStat {

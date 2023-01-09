@@ -20,11 +20,23 @@
             <input placeholder="Email" type="email">
             <button mat-flat-button color="warn">Reset Password</button>
         </div>
-        <div *ngIf="state == 'REGISTER'">
-            <input placeholder="Email" type="email">
-            <input placeholder="Password" type="password">
-            <input placeholder="Confirm Password" type="password">
-            <button mat-flat-button color="warn">Create</button>
+        <div *ngIf="state == 'REGISTER'" [formGroup]="regForm">
+            <input formControlName="email" placeholder="Email" type="email"> 
+            <div *ngIf="regForm.get('email').invalid && regForm.get('email').touched">
+                <small *ngIf="regForm.get('email').errors?.required">Email is required</small>
+                <small *ngIf="regForm.get('email').errors?.email">Provide a valid email address</small>
+            </div>
+            <input formControlName="password" placeholder="Password" type="password">
+            <div *ngIf="regForm.get('password').invalid && regForm.get('password').touched">
+                <small *ngIf="regForm.get('password').errors?.required">Password is required</small>
+                <small *ngIf="regForm.get('password').errors?.minlength || regForm.get('password').errors?.maxlength">Password must be 8 to 16 characters long</small>
+            </div>
+            <input formControlName="confirmPassword" placeholder="Confirm Password" type="password">
+            <div *ngIf="regForm.get('confirmPassword').invalid && regForm.get('confirmPassword').touched ||regForm.get('password').value != regForm.get('confirmPassword').value && regForm.get('confirmPassword').touched ">
+                <small *ngIf="regForm.get('confirmPassword').errors?.required">Confirm Password is required</small>
+                <small *ngIf="regForm.get('password').value != regForm.get('confirmPassword').value">Password does not match</small>
+            </div>
+            <button (click)="onRegSubClick()" mat-flat-button color="warn">Create</button>
         </div>
         <div>
 
