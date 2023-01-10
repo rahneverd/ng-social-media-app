@@ -1,15 +1,17 @@
 <div id="nav-bar">
-    <div id="nav-bar-content">
-        <div id="nav-bar-left">
-            <div style="font-size: 1.5em;" id="nav-bar-items">RDSM App</div>
-        </div>
-        <div id="nav-bar-right">
-            <div
-            (click)="onLoginClick()"
-            id="nav-bar-items">Login</div>
-        </div>
+  <div id="nav-bar-content">
+    <div id="nav-bar-left">
+      <div style="font-size: 1.5em" id="nav-bar-items">RDSM App</div>
     </div>
+    <div id="nav-bar-right">
+      <div *ngIf="!isLoggedIn" (click)="onLoginClick()" id="nav-bar-items">
+        Login
+      </div>
+      <div *ngIf="isLoggedIn" (click)="onLogoutClick()" id="nav-bar-items">
+        Logout
+      </div>
+    </div>
+  </div>
 </div>
-
 
 <router-outlet></router-outlet>
