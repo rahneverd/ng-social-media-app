@@ -22,6 +22,12 @@
                 <small *ngIf="loginForm.get('password').errors?.required">Password is required</small>
                 <small *ngIf="loginForm.get('password').errors?.minlength || loginForm.get('password').errors?.maxlength">Password must be 8 to 16 characters long</small>
             </div>
+            <div *ngIf="userNotFound">
+                <small>Provided email is not in use</small>
+            </div>
+            <div *ngIf="wrongPassword">
+                <small>Provided password is incorrect</small>
+            </div>
             <button [disabled]="!loginForm.valid" (click)="onLoginSubClick()" mat-flat-button color="warn">Login</button>
         </div>
         <div *ngIf="state == 'FORGOT'" [formGroup]="resetForm">
@@ -29,6 +35,9 @@
             <div *ngIf="resetForm.get('email').invalid && resetForm.get('email').touched">
                 <small *ngIf="resetForm.get('email').errors?.required">Email is required</small>
                 <small *ngIf="resetForm.get('email').errors?.email">Provide a valid email address</small>
+            </div>
+            <div *ngIf="invalidEmail">
+                <small>Provided email is not in use</small>
             </div>
             <button [disabled]="!resetForm.valid" (click)="onResetSubClick()" mat-flat-button color="warn">Reset Password</button>
         </div>
@@ -47,6 +56,9 @@
             <div *ngIf="regForm.get('confirmPassword').invalid && regForm.get('confirmPassword').touched ||regForm.get('password').value != regForm.get('confirmPassword').value && regForm.get('confirmPassword').touched ">
                 <small *ngIf="regForm.get('confirmPassword').errors?.required">Confirm Password is required</small>
                 <small *ngIf="regForm.get('password').value != regForm.get('confirmPassword').value">Password does not match</small>
+            </div>
+            <div *ngIf="emailAlreadyInUse">
+                <small>Provided email is already in use</small>
             </div>
             <button [disabled]="!regForm.valid" (click)="onRegSubClick()" mat-flat-button color="warn">Create</button>
         </div>
